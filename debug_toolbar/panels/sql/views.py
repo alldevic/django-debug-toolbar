@@ -70,7 +70,7 @@ def sql_explain(request):
                 # See https://www.sqlite.org/lang_explain.html for details
                 cursor.execute(f"EXPLAIN QUERY PLAN {sql}", params)
             elif vendor == "postgresql":
-                cursor.execute(f"EXPLAIN ANALYZE {sql}", params)
+                cursor.execute(f"SET track_io_timing = TRUE; EXPLAIN (ANALYZE, BUFFERS) {sql}", params)
             else:
                 cursor.execute(f"EXPLAIN {sql}", params)
             headers = [d[0] for d in cursor.description]
